@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 public class BankAccount
 {
@@ -11,7 +12,7 @@ public class BankAccount
 
     public void ViewBalance()
     {
-        Console.WriteLine("Your current balance is: $" + balance);
+        Console.WriteLine("Your current balance is: £" + balance);
     }
 
     public void AddBalance(decimal amount)
@@ -19,7 +20,7 @@ public class BankAccount
         if (amount > 0)
         {
             balance += amount;
-            Console.WriteLine($"You added ${amount}. New balance: ${balance}");
+            Console.WriteLine($"You added £{amount}. New balance: £{balance}");
         }
         else
         {
@@ -32,7 +33,7 @@ public class BankAccount
         if (amount > 0 && amount <= balance)
         {
             balance -= amount;
-            Console.WriteLine($"You removed ${amount}. New balance: ${balance}");
+            Console.WriteLine($"You removed £{amount}. New balance: £{balance}");
         }
         else
         {
@@ -45,7 +46,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        BankAccount myAccount = new BankAccount(1000);  // Starting with $1000
+        BankAccount myAccount = new BankAccount(0);
 
         while (true)
         {
@@ -65,13 +66,11 @@ class Program
                     myAccount.ViewBalance();
                     break;
                 case "2":
-                    Console.Write("Enter amount to add: $");
-                    decimal addAmount = Convert.ToDecimal(Console.ReadLine());
+                    decimal addAmount = GetValidDecimal("Enter mount to add: £");
                     myAccount.AddBalance(addAmount);
                     break;
                 case "3":
-                    Console.Write("Enter amount to remove: $");
-                    decimal removeAmount = Convert.ToDecimal(Console.ReadLine());
+                    decimal removeAmount = GetValidDecimal("Enter amount to remove: £");
                     myAccount.RemoveBalance(removeAmount);
                     break;
                 case "4":
@@ -86,5 +85,23 @@ class Program
             Console.ReadKey();
         }
     }
-}
 
+    static decimal GetValidDecimal(string message)
+    {
+        decimal amount;
+        while (true)
+        {
+            Console.Write(message);
+            string input = Console.ReadLine();
+
+            if (decimal.TryParse(input, out amount) && amount >= 0)
+            {
+                return amount;
+            }
+
+            Console.WriteLine("Invalid amount, please try again.");
+
+        }
+
+    }
+}
